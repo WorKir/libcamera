@@ -51,5 +51,5 @@ jobs:
       - name: Upload binary
         uses: actions/upload-artifact@v4
         with:
-          name: hello
-          path: build/hello
+          name: libcamera_1.1.1-1_amd64.deb
+          path: libcamera_1.1.1-1_amd64.deb
