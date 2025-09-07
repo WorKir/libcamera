@@ -18,7 +18,11 @@ jobs:
 
       - name: Install cross compiler and build utils
         run: |
-          apt update
+          USER=root && \
+          LOGNAME=root && \
+          export USER && \
+          export LOGNAME && \
+          apt update && \
           apt install -y gcc-aarch64-linux-gnu \
           g++-aarch64-linux-gnu \
           python3-pip \
