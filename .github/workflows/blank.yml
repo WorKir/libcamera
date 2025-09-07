@@ -1,0 +1,55 @@
+name: Cross compile for ARM64
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: debian:12
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - name: Install cross compiler and build utils
+        run: |
+          apt update
+          apt install -y gcc-aarch64-linux-gnu \
+          g++-aarch64-linux-gnu \
+          python3-pip \
+          git \
+          python3-dev \
+          python3-jinja2 \
+          libboost-dev \
+          libgnutls28-dev \
+          openssl \
+          libtiff-dev \
+          pybind11-dev \
+          qtbase5-dev \
+          libqt5core5a \
+          libqt5widgets5 \
+          meson \
+          cmake \
+          python3-yaml \
+          python3-ply \
+          debhelper \
+          dh-make
+
+      - name: Cross compile
+        run: |
+          mkdir obj-aarch64-linux-gnu
+          dh_make --createorig --single --yes
+          yes | cp -rf ../../rules debian/rules
+          meson setup obj-x86_64-linux-gnu --buildtype=release -Dpipelines=rpi/vc4,rpi/pisp -Dipas=rpi/vc4,rpi/pisp -Dv4l2=true -Dgstreamer=disabled -Dtest=false -Dlc-compliance=disabled -Dcam=disabled -Dqcam=disabled -Ddocumentation=disabled -Dpycamera=enabled
+          dpkg-buildpackage -rfakeroot -us -uc -b
+
+      - name: Upload binary
+        uses: actions/upload-artifact@v3
+        with:
+          name: hello
+          path: build/hello
