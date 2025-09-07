@@ -46,7 +46,7 @@ jobs:
           mkdir obj-aarch64-linux-gnu
           dh_make --createorig --single --yes
           yes | cp -rf ../../rules debian/rules
-          meson setup obj-x86_64-linux-gnu --buildtype=release -Dpipelines=rpi/vc4,rpi/pisp -Dipas=rpi/vc4,rpi/pisp -Dv4l2=true -Dgstreamer=disabled -Dtest=false -Dlc-compliance=disabled -Dcam=disabled -Dqcam=disabled -Ddocumentation=disabled -Dpycamera=enabled
+          meson setup build --buildtype=release -Dpipelines=rpi/vc4,rpi/pisp -Dipas=rpi/vc4,rpi/pisp -Dv4l2=true -Dgstreamer=disabled -Dtest=false -Dlc-compliance=disabled -Dcam=disabled -Dqcam=disabled -Ddocumentation=disabled -Dpycamera=enabled
           dpkg-buildpackage -rfakeroot -us -uc -b
 
       - name: Upload binary
