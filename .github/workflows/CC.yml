@@ -1,0 +1,57 @@
+name: Cross compile for ARM64
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - name: Install cross compiler and build utils
+        run: |
+          USER=root
+          LOGNAME=root
+          export USER
+          export LOGNAME
+          sudo apt update
+          sudo apt install -y gcc-aarch64-linux-gnu \
+          g++-aarch64-linux-gnu \
+          python3-pip \
+          git \
+          python3-dev \
+          python3-jinja2 \
+          libboost-dev \
+          libgnutls28-dev \
+          openssl \
+          libtiff-dev \
+          pybind11-dev \
+          qtbase5-dev \
+          libqt5core5a \
+          libqt5widgets5 \
+          meson \
+          cmake \
+          python3-yaml \
+          python3-ply \
+          debhelper \
+          dh-make
+
+      - name: Cross compile
+        run: |
+          dh_make --createorig --single --yes
+          yes | cp -rf ../rules debian/rules
+          meson setup obj-x86_64-linux-gnu --buildtype=release --prefix=/usr --sysconfdir=/etc --localstatedir=/var --libdir=lib/x86_64-linux-gnu -Dpipelines=rpi/vc4,rpi/pisp -Dipas=rpi/vc4,rpi/pisp -Dv4l2=true -Dgstreamer=disabled -Dtest=false -Dlc-compliance=disabled -Dcam=disabled -Dqcam=disabled -Ddocumentation=disabled -Dpycamera=enabled
+          dpkg-buildpackage -rfakeroot -us -uc -b
+          ls
+          ls ..
+
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: libcamera_0.5.2-1_arm64.deb
+          path: libcamera_0.5.2-1_arm64.deb
