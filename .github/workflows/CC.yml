@@ -21,6 +21,7 @@ jobs:
           export LOGNAME
           sudo apt update
           sudo apt install -y gcc-aarch64-linux-gnu \
+          build-essential \
           g++-aarch64-linux-gnu \
           python3-pip \
           git \
@@ -45,7 +46,7 @@ jobs:
         run: |
           dh_make --createorig --single --yes
           yes | cp -rf rules debian/rules
-          meson setup obj-arm64-linux-gnu --buildtype=release --prefix=/usr --sysconfdir=/etc --localstatedir=/var --libdir=lib/x86_64-linux-gnu -Dpipelines=rpi/vc4,rpi/pisp -Dipas=rpi/vc4,rpi/pisp -Dv4l2=true -Dgstreamer=disabled -Dtest=false -Dlc-compliance=disabled -Dcam=disabled -Dqcam=disabled -Ddocumentation=disabled -Dpycamera=enabled
+          meson setup obj-aarch64-linux-gnu --buildtype=release --prefix=/usr --sysconfdir=/etc --localstatedir=/var --libdir=lib/aarch64-linux-gnu -Dpipelines=rpi/vc4,rpi/pisp -Dipas=rpi/vc4,rpi/pisp -Dv4l2=true -Dgstreamer=disabled -Dtest=false -Dlc-compliance=disabled -Dcam=disabled -Dqcam=disabled -Ddocumentation=disabled -Dpycamera=enabled
           dpkg-buildpackage -rfakeroot -us -uc -b
           ls
           ls ..
@@ -53,5 +54,5 @@ jobs:
       - name: Upload binary
         uses: actions/upload-artifact@v4
         with:
-          name: libcamera_0.5.2-1_arm64.deb
-          path: libcamera_0.5.2-1_arm64.deb
+          name: libcamera_0.5.2-1_aarch64.deb
+          path: libcamera_0.5.2-1_aarch64.deb
