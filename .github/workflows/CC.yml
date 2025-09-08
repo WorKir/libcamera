@@ -54,10 +54,11 @@ jobs:
         with:
           name: libcamera_0.5.2-1_arm64.deb
           path: libcamera_0.5.2-1_arm64.deb
-          
+
       - name: Release
-        uses: softprops/action-gh-release@v2
-        if: github.ref_type == 'tag'
+        uses: "marvinpinto/action-automatic-releases@v1.2.1."
         with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false
           files: |
             libcamera_0.5.2-1_arm64.deb
