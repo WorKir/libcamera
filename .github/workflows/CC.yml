@@ -2,9 +2,9 @@ name: Compile for ARM64
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "main" ]
+    tags:
+      - "v*.*.*"
       
 permissions:
   contents: write
@@ -59,7 +59,6 @@ jobs:
           path: libcamera_0.5.2-1_arm64.deb
 
       - name: Create GitHub Release
-        if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
           files: |
