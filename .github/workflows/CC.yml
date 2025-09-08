@@ -44,8 +44,8 @@ jobs:
       - name: Cross compile
         run: |
           dh_make --createorig --single --yes
-          yes | cp -rf ../rules debian/rules
-          meson setup obj-x86_64-linux-gnu --buildtype=release --prefix=/usr --sysconfdir=/etc --localstatedir=/var --libdir=lib/x86_64-linux-gnu -Dpipelines=rpi/vc4,rpi/pisp -Dipas=rpi/vc4,rpi/pisp -Dv4l2=true -Dgstreamer=disabled -Dtest=false -Dlc-compliance=disabled -Dcam=disabled -Dqcam=disabled -Ddocumentation=disabled -Dpycamera=enabled
+          yes | cp -rf rules debian/rules
+          meson setup obj-arm64-linux-gnu --buildtype=release --prefix=/usr --sysconfdir=/etc --localstatedir=/var --libdir=lib/x86_64-linux-gnu -Dpipelines=rpi/vc4,rpi/pisp -Dipas=rpi/vc4,rpi/pisp -Dv4l2=true -Dgstreamer=disabled -Dtest=false -Dlc-compliance=disabled -Dcam=disabled -Dqcam=disabled -Ddocumentation=disabled -Dpycamera=enabled
           dpkg-buildpackage -rfakeroot -us -uc -b
           ls
           ls ..
