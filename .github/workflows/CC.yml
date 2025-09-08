@@ -13,7 +13,7 @@ jobs:
       - name: Check out repo
         uses: actions/checkout@v3
 
-      - name: Install cross compiler and build utils
+      - name: Install compiler and build utils
         run: |
           export USER=root
           export LOGNAME=root
@@ -40,7 +40,7 @@ jobs:
           debhelper \
           dh-make
 
-      - name: Cross compile
+      - name: Compile and create DEB package
         run: |
           cd libcamera-0.5.2
           dh_make --createorig --single --yes
@@ -55,8 +55,9 @@ jobs:
           name: libcamera_0.5.2-1_arm64.deb
           path: libcamera_0.5.2-1_arm64.deb
           
-      - name: Release with Notes
-        uses: softprops/action-gh-release@v1
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        if: github.ref_type == 'tag'
         with:
           files: |
             libcamera_0.5.2-1_arm64.deb
