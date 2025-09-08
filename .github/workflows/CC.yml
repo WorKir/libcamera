@@ -55,4 +55,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: libcamera_0.5.2-1_arm64.deb
-          path: libcamera_0.5.2-1_arm64.deb
+          path: ../libcamera_0.5.2-1_arm64.deb
