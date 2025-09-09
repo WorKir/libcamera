@@ -1,0 +1,2 @@
+meson setup obj-aarch64-linux-gnu --buildtype=release 
+--prefix=/usr/local/ --sysconfdir=/usr/local/etc --localstatedir=/var --libdir=lib/aarch64-linux-gnu -Dpipelines=rpi/vc4,rpi/pisp -Dipas=rpi/vc4,rpi/pisp -Dv4l2=true -Dgstreamer=disabled -Dtest=false -Dlc-compliance=disabled -Dcam=disabled -Dqcam=disabled -Ddocumentation=disabled -Dpycamera=enabled
