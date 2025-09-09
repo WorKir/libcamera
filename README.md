@@ -49,7 +49,7 @@ docker buildx build \
 ```
 docker_id=$(docker ps -aqf "name=temp-libcam-deb")
 ```
-**або** (якщо temp-libcam-deb не створився) Краще перевірити за допомогою `echo $docker_id`
+**АБО** (якщо temp-libcam-deb не створився. Краще перевірити за допомогою `echo $docker_id`)
 ```
 docker_id=$(docker create --name temp-libcam-deb --platform linux/arm64 libcam-deb:arm64)
 ```
