@@ -45,11 +45,9 @@ docker buildx build \
   --load -t libcam-deb:arm64 \
   -f Dockerfile.build
 ```
-## Отримання .deb файлу
+### Отримання .deb файлу
 ```
 docker_id=$(docker ps -aqf "name=temp-libcam-deb")
-```
-**АБО** (якщо temp-libcam-deb не створився. Краще перевірити за допомогою `echo $docker_id`)
 ```
 docker_id=$(docker create --name temp-libcam-deb --platform linux/arm64 libcam-deb:arm64)
 ```
