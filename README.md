@@ -48,8 +48,6 @@ docker buildx build \
 ### Отримання .deb файлу
 ```
 docker_id=$(docker create --name temp-libcam-deb --platform linux/arm64 libcam-deb:arm64)
-```
-```
 docker cp $docker_id:libcamera_0.5.2-1_arm64.deb .
 docker rm $docker_id
 ```
