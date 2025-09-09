@@ -43,7 +43,7 @@ cd libcamera
 docker buildx build \
   --platform linux/arm64 \
   --load -t libcam-deb:arm64 \
-  -f Dockerfile.build
+  -f Dockerfile.build .
 ```
 ### Отримання .deb файлу
 ```
