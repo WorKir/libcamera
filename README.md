@@ -1,7 +1,5 @@
-README.md
-
 # Опис
-В цьому репозиторії знаходиться копія бібліотеки libcamera. При push тега у форматі v1.5.2 відбувається білд і пакування бібліотеки в .deb для arm64. Результат додається у вкладку Releases відповідного тега.
+В цьому репозиторії знаходиться копія бібліотеки libcamera. При push тега у форматі v*.*.* відбувається білд і пакування бібліотеки в .deb форматі для arm64. Результат додається у вкладку Releases відповідного тега.
 
 # Шляхи компіляції
 
@@ -48,10 +46,17 @@ docker buildx build \
 ```
 ## Отримання .deb файлу
 ```
+docker_id=$(docker ps -aqf "name=temp-libcam-deb")
+```
+**OR**
+```
 docker_id=$(docker create --name temp-libcam-deb --platform linux/arm64 libcam-deb:arm64)
+```
+```
 docker cp $docker_id:libcamera_0.5.2-1_arm64.deb .
 docker rm $docker_id
 ```
+Тепер у нас є .deb пакет:)
 # Встановлення та перевірка роботи пакета
 
 **Проблема 1:** Мені вдалось емулювати образ Raspberry pi на ARM через QEMU, але на ньому вже було встановлено rpicam-apps з усіма залежностями. Нормально їх всі видалити поки не вийшло.
@@ -68,3 +73,12 @@ docker rm $docker_id
 Мій Docker image `kerya/test-libcamera:arm` вже містить в собі всі інструменти для білду rpicam-apps. 
 Dockerfile.test передає в контейнер `test-libcamera` наш .deb пакет, розпаковує його та починає білд і встановлення rpicam-apps. Якщо пакет встановлено успішно -- в кінці виконується команда `rpicam-still --version` та `rpicam-hello`
 
+1. Покладіть файл libcamera_0.5.2-1_arm64.deb поруч з Dockerfile.test
+2. Запустіть білд Dockerfile.test
+
+```
+docker buildx build \
+--platform linux/arm64 \
+-f Dockerfile.test .
+```
+Після виконання ви побачите результати команд `rpicam-still --version` та `rpicam-hello`
