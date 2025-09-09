@@ -1,2 +1,70 @@
-MY WORKFLOW!
-UPDATE 2222
+README.md
+
+#Опис
+В цьому репозиторії знаходиться копія бібліотеки libcamera. При push тега у форматі v*.*.* відбувається білд і пакування бібліотеки в .deb форматі для arm64. Результат додається у вкладку Releases відповідного тега.
+
+#Шляхи компіляції
+
+Для збирання бібліотеки в GitHub actions використовується ранер `ubuntu-24.04-arm` для компіляції нативно.
+Для локального білда використовується docker cross-compile.
+
+#Відтворення в GitHub Actions
+Внесення змін та пуш нового тега
+
+```
+git add .
+git commit -m "Release v1.5.2"
+git push -u origin main
+git tag v1.5.2
+git push origin v1.5.2
+```
+Після цього запуститься workflow і у вкладці Releases з'явиться запис про тег v1.5.2 та файл libcamera_0.5.2-1_arm64.deb 
+
+#Локальне відтворення збірки
+***Дисклеймер***
+_Хоча тести явно не прописані, деякі все одно відбуваютьсяв в процесі стоврення .deb за допомогою dpkg на етапі dh_auto_test_
+
+_Також можна було запустити github workflow локально з act, але потрібно більше часу, щоб з ним розібратися. 
+В ідеалі також робити ці докерфайли універсальними для різних архітектур, ретельніше перевіряти версії залежностей тощо._
+
+##Встановлення залежностей
+
+1. Встановити docker ([детальніше тут](https://docs.docker.com/engine/install/))
+2. Встановити QEMU tools
+docker run --privileged --rm tonistiigi/binfmt --install all
+
+##Запуск білда
+```
+git clone https://github.com/WorKir/libcamera.git
+```
+```
+cd libcamera
+```
+```
+docker buildx build \
+  --platform linux/arm64 \
+  --load -t libcam-deb:arm64 \
+  -f Dockerfile.build
+```
+##Отримання .deb файлу
+```
+docker_id=$(docker create --name temp-libcam-deb --platform linux/arm64 libcam-deb:arm64)
+docker cp $docker_id:libcamera_0.5.2-1_arm64.deb .
+docker rm $docker_id
+```
+#Встановлення та перевірка роботи пакета
+
+**Проблема 1:** Мені вдалось емулювати образ Raspberry pi на ARM через QEMU, але на ньому вже було встановлено rpicam-apps з усіма залежностями. Нормально їх всі видалити поки не вийшло.
+
+**Проблема 2:** Спроби емуляції Debian 12 з QEMU поки невдалі -- встановлення ОС завжди гальмує на 83% і далі не рухається:(
+
+Тому перевіряти будемо теж на докері:)
+
+##Перевірка
+
+Так як libcams потрбіен для використання rpicam-apps, перевіряти будемо теж ними.
+При ручному білді і встановленні rpicam-apps перевіряє потрбіні залежності, в тому числі бібліотеку libcamera. На це і будемо покладатсия.
+
+Мій Docker image `kerya/test-libcamera:arm` вже містить в собі всі інструменти для білду rpicam-apps. 
+Dockerfile.test передає в контейнер `test-libcamera` наш .deb пакет, розпаковує його та починає білд і встановлення rpicam-apps. Якщо пакет встановлено успішно -- в кінці виконується команда `rpicam-still --version` та `rpicam-hello`
+
