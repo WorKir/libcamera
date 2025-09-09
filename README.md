@@ -71,7 +71,7 @@ docker rm $docker_id
 Так як libcams потрбіен для використання rpicam-apps, перевіряти будемо теж ними.<br>
 При ручному білді і встановленні rpicam-apps перевіряє потрбіні залежності, в тому числі бібліотеку libcamera. На це і будемо покладатсия.<br>
 
-Мій Docker image `kerya/test-libcamera:arm` вже містить в собі всі інструменти для білду rpicam-apps. <br>
+Мій Docker image `kerya/debian:lib-test` вже містить в собі всі інструменти для білду rpicam-apps. <br>
 Dockerfile.test передає в контейнер `test-libcamera` наш .deb пакет, розпаковує його та починає білд і встановлення rpicam-apps. Якщо пакет встановлено успішно -- в кінці виконується команда `rpicam-still --version` та `rpicam-hello`<br>
 
 1. Покладіть файл libcamera_0.5.2-1_arm64.deb поруч з Dockerfile.test
