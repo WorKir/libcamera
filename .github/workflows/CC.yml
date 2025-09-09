@@ -48,7 +48,7 @@ jobs:
           cd libcamera-0.5.2
           dh_make --createorig --single --yes
           yes | cp -rf ../rules debian/rules
-          meson setup obj-aarch64-linux-gnu --buildtype=release --prefix=/usr --sysconfdir=/etc --localstatedir=/var --libdir=lib/aarch64-linux-gnu -Dpipelines=rpi/vc4,rpi/pisp -Dipas=rpi/vc4,rpi/pisp -Dv4l2=true -Dgstreamer=disabled -Dtest=false -Dlc-compliance=disabled -Dcam=disabled -Dqcam=disabled -Ddocumentation=disabled -Dpycamera=enabled
+          meson setup obj-aarch64-linux-gnu --buildtype=release --prefix=/usr/local --sysconfdir=/usr/local/etc --localstatedir=/var --libdir=lib/aarch64-linux-gnu -Dpipelines=rpi/vc4,rpi/pisp -Dipas=rpi/vc4,rpi/pisp -Dv4l2=true -Dgstreamer=disabled -Dtest=false -Dlc-compliance=disabled -Dcam=disabled -Dqcam=disabled -Ddocumentation=disabled -Dpycamera=enabled
           dpkg-buildpackage -rfakeroot -us -uc -b
           cd ..
 
