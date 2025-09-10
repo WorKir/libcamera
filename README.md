@@ -54,13 +54,7 @@ docker rm $docker_id
 Тепер у нас є .deb пакет:)
 # Встановлення та перевірка роботи пакета
 
-**Проблема 1:** Мені вдалось емулювати образ Raspberry pi на ARM через QEMU, але на ньому вже було встановлено rpicam-apps з усіма залежностями. Нормально їх всі видалити поки не вийшло.<br>
-<br>
-**Проблема 2:** Спроби емуляції Debian 12 з QEMU поки невдалі -- встановлення ОС завжди гальмує на 83% і далі не рухається:(<br>
-<br>
-Тому перевіряти будемо теж на докері:)<br>
-
-## Перевірка
+Перевіряти будемо теж на докері:)<br>
 
 Так як libcams потрбіен для використання rpicam-apps, перевіряти будемо теж ними.<br>
 При ручному білді і встановленні rpicam-apps перевіряє потрбіні залежності, в тому числі бібліотеку libcamera. На це і будемо покладатсия.<br>
@@ -68,8 +62,12 @@ docker rm $docker_id
 Мій Docker image `kerya/debian:lib-test` вже містить в собі всі інструменти для білду rpicam-apps. <br>
 Dockerfile.test передає в контейнер `test-libcamera` наш .deb пакет, розпаковує його та починає білд і встановлення rpicam-apps. Якщо пакет встановлено успішно -- в кінці виконується команда `rpicam-still --version` та `rpicam-hello`<br>
 
-1. Покладіть файл libcamera_0.5.2-1_arm64.deb поруч з Dockerfile.test
-2. Запустіть білд Dockerfile.test
+1. Встановіть QEMU tools
+```
+docker run --privileged --rm tonistiigi/binfmt --install all
+```
+2. Покладіть файл libcamera_0.5.2-1_arm64.deb поруч з Dockerfile.test
+3. Запустіть білд Dockerfile.test
 
 ```
 docker buildx build \
