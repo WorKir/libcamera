@@ -16,8 +16,6 @@ jobs:
 
       - name: Install compiler and build utils
         run: |
-          export USER=root
-          export LOGNAME=root
           apt update
           apt install -y gcc-aarch64-linux-gnu \
           build-essential \
@@ -43,6 +41,8 @@ jobs:
 
       - name: Compile and create DEB package
         run: |
+          export USER=root
+          export LOGNAME=root
           cd libcamera-0.5.2
           dh_make --createorig --single --yes
           yes | cp -rf ../rules debian/rules
