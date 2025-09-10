@@ -66,8 +66,8 @@ Dockerfile.test передає в контейнер `test-libcamera` наш .de
 ```
 docker run --privileged --rm tonistiigi/binfmt --install all
 ```
-2. Покладіть файл libcamera_0.5.2-1_arm64.deb поруч з Dockerfile.test
-3. Запустіть білд Dockerfile.test
+2. Покладіть файл `libcamera_0.5.2-1_arm64.deb` поруч з `Dockerfile.test`
+3. Запустіть білд `Dockerfile.test`
 
 ```
 docker buildx build \
