@@ -18,8 +18,8 @@ jobs:
         run: |
           export USER=root
           export LOGNAME=root
-          sudo apt update
-          sudo apt install -y gcc-aarch64-linux-gnu \
+          apt update
+          apt install -y gcc-aarch64-linux-gnu \
           build-essential \
           g++-aarch64-linux-gnu \
           python3-pip \
