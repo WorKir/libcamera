@@ -12,14 +12,14 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-24.04-arm
+    container: kerya/debian:arm64
+    
     steps:
       - name: Check out repo
         uses: actions/checkout@v3
 
       - name: Install compiler and build utils
         run: |
-          export USER=root
-          export LOGNAME=root
           sudo apt update
           sudo apt install -y gcc-aarch64-linux-gnu \
           build-essential \
@@ -45,6 +45,8 @@ jobs:
 
       - name: Compile and create DEB package
         run: |
+          export USER=root
+          export LOGNAME=root
           cd libcamera-0.5.2
           dh_make --createorig --single --yes
           yes | cp -rf ../rules debian/rules
