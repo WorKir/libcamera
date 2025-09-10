@@ -1,7 +1,6 @@
 name: Compile for ARM64
 
 # Controls when the workflow will run
-on: [push]
       
 permissions:
   contents: write
